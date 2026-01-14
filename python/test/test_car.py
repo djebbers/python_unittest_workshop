@@ -10,14 +10,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(
 from src.car import Car, CarColor
 
 class TestCar(unittest.TestCase):
-    def test_car_delivered_from_factory_zero_mileage(self):
+    def test_get_milage__new_car_has_zero_mileage(self):
         car = Car()
         car.set_license_plate("30-UTW-87")
         car.set_color(CarColor.RED)
 
         mileage = car.get_mileage()
 
-        self.assertAlmostEqual(0.0, mileage)
+        self.assertAlmostEqual(mileage, 0.0)
 
     def test_car_drives_2_miles_mileage_increased_with_2(self):
         car = Car()
@@ -30,7 +30,7 @@ class TestCar(unittest.TestCase):
 
         mileage = car.get_mileage()
 
-        self.assertAlmostEqual(2.0, mileage)
+        self.assertAlmostEqual(mileage, 2.0)
 
     def test_new_car_has_color_black(self):
         car = Car()
@@ -47,7 +47,7 @@ class TestCar(unittest.TestCase):
 
         color = car.get_color()
 
-        self.assertEqual(CarColor.RED, color)
+        self.assertEqual(color, CarColor.RED)
 
     def test_car_different_license_plate(self):
         car = Car()
@@ -56,7 +56,7 @@ class TestCar(unittest.TestCase):
 
         license_plate = car.get_license_plate()
 
-        self.assertEqual("30-BAO-43", license_plate)
+        self.assertEqual(license_plate, "30-BAO-43")
 
 if __name__ == "__main__":
     unittest.main()

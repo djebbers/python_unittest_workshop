@@ -12,6 +12,9 @@ from src.alarm import Alarm
 class TestAlarm(unittest.TestCase):
     def test_alarm_is_off_by_default(self):
         alarm = Alarm()
+        
+        alarm.check()
+        
         self.assertFalse(alarm.is_alarm_on())
 
 if __name__ == "__main__":

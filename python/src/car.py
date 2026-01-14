@@ -1,32 +1,14 @@
 from __future__ import absolute_import
 
-from src.engine import Engine
-
-class CarColor(object):
-    BLACK = 1
-    RED = 2
-    BLUE = 3
-
-class CarState(object):
-    OFF = 1
-    ON = 2
-    DRIVING = 3
-
-class Car(object):
-    def __init__(self):
-        """Construct the car"""
-        self.engine = Engine()
-
-        self.license_plate = ""
-        self.mileage = 0.0
-
-        self.color = CarColor.BLACK
-        self.state = CarState.OFF
-from __future__ import absolute_import
-
 import os
 
+from six import PY3
 from src.engine import Engine
+
+if PY3:
+    ERROR = FileNotFoundError
+else:
+    ERROR = IOError
 
 class CarColor(object):
     BLACK = 1
@@ -49,7 +31,7 @@ class Car(object):
         self.color = CarColor.BLACK
         self.state = CarState.OFF
 
-    @classmethod
+    @staticmethod
     def _get_milage_file():
         """
         Finds the path to milage.txt relative to the current script's location
@@ -59,7 +41,9 @@ class Car(object):
         # normalize the path to resolve any '..'
         normalized_path = os.path.normpath(milage_file_path)
         if not os.path.exists(normalized_path):
-            raise FileNotFoundError("Mileage file not found at {0}".format(normalized_path))
+            raise ERROR("Mileage file not found at {0}".format(normalized_path))
+
+        return normalized_path
         
 
     def start(self):
@@ -72,45 +56,6 @@ class Car(object):
             self.mileage = float(f.read())
 
         self.state = CarState.ON
-
-    def stop(self):
-        self.engine.stop()
-        self.state = CarState.OFF
-
-    def drive(self):
-        if self.state is CarState.ON:
-            self.state = CarState.DRIVING
-
-    def brake(self):
-        if self.state is CarState.DRIVING:
-            self.state = CarState.ON
-
-    def get_mileage(self):
-        return self.mileage
-
-    def set_license_plate(self, license_plate):
-        if not license_plate:
-            raise ValueError('license plate cannot be empty.')
-        else:
-            self.license_plate = license_plate
-
-    def add_mile(self):
-        if self.state is CarState.DRIVING:
-            self.mileage = self.mileage + 1.0
-
-    def set_color(self, color):
-        self.color = color
-
-    def get_color(self):
-        return self.color
-
-    def get_license_plate(self):
-        return self.license_plate
-
-    def add_kilometers(self, kilometers):
-        self.mileage = self.mileage + (1.609344 * kilometers)
-
-
 
     def stop(self):
         self.engine.stop()

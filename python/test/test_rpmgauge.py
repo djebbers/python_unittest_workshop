@@ -12,7 +12,7 @@ from src.rpmgauge import RpmGauge, GaugeColor
 class TestRpmGauge(unittest.TestCase):
     def test_default_color_green(self):
         gauge = RpmGauge()
-        self.assertEqual(GaugeColor.GREEN, gauge.get_color())
+        self.assertEqual(gauge.get_color(), GaugeColor.GREEN)
 
 if __name__ == "__main__":
     unittest.main()
