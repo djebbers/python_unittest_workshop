@@ -23,7 +23,7 @@ def test_something_function(self):
     value = sut.something(1, 2, 3)
     self.assertNotEqual(value, expected_value)
 
-def test_slow_function__made_fast__passes(self):
+def test_slow_function__made_fast__no_error_raised(self):
     sut = MySut()
     expected_result = 10
     # There is no method to change the value of _wait_time other than

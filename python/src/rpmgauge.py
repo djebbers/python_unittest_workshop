@@ -1,6 +1,6 @@
 class GaugeColor(object):
     GREEN = 1
-    ORANGE = 2
+    BLUE = 2
     RED = 3
 
 class RpmGauge(object):
@@ -23,14 +23,14 @@ class RpmGauge(object):
         """
         Determine the color of the gauge.
         :returns GaugeColor  Red: 6000 >= rpm
-                             Orange: 4000 <= rpm < 6000
+                             Blue: 4000 <= rpm < 6000
                              Green: 0 <= rpm < 4000
         """
         color = GaugeColor.GREEN
         if self.rpm >= 6000:
             color = GaugeColor.RED
         elif self.rpm >= 4000:
-            color = GaugeColor.ORANGE
+            color = GaugeColor.BLUE
 
         return color
 
