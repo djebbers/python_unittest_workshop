@@ -43,31 +43,40 @@ class Car(object):
         if not os.path.exists(normalized_path):
             raise ERROR("Mileage file not found at {0}".format(normalized_path))
 
-        return normalized_path
-        
+        return normalized_path      
 
     def start(self):
-        if not self.engine.start():
-            raise ValueError('Broken valve.')
+        if self.state is CarState.OFF:
+            if not self.engine.start():
+                raise ValueError('Broken valve.')
 
-        self.mileage = 0.0
-        mileage_file_path = self._get_milage_file()
-        with open(mileage_file_path, 'r') as f:
-            self.mileage = float(f.read())
+            self.mileage = 0.0
+            mileage_file_path = self._get_milage_file()
+            with open(mileage_file_path, 'r') as f:
+                self.mileage = float(f.read())
 
-        self.state = CarState.ON
+            self.state = CarState.ON
+        else:
+            raise ValueError("Car must be OFF to start it")
 
     def stop(self):
-        self.engine.stop()
-        self.state = CarState.OFF
+        if self.state is CarState.ON:
+            self.engine.stop()
+            self.state = CarState.OFF
+        else:
+            raise ValueError("Car must be ON and not DRIVING to stop it")
 
     def drive(self):
         if self.state is CarState.ON:
             self.state = CarState.DRIVING
+        else:
+            raise ValueError("Car must be ON to start driving")
 
     def brake(self):
         if self.state is CarState.DRIVING:
             self.state = CarState.ON
+        else:
+            raise ValueError("Car must be DRIVING to brake")
 
     def get_mileage(self):
         return self.mileage
@@ -81,6 +90,8 @@ class Car(object):
     def add_mile(self):
         if self.state is CarState.DRIVING:
             self.mileage = self.mileage + 1.0
+        else:
+            raise ValueError("Car must be DRIVING to add miles")
 
     def set_color(self, color):
         self.color = color
@@ -92,5 +103,8 @@ class Car(object):
         return self.license_plate
 
     def add_kilometers(self, kilometers):
-        self.mileage = self.mileage + (1.609344 * kilometers)
+        if self.state is CarState.DRIVING:
+            self.mileage = self.mileage + (1.609344 * kilometers)
+        else:
+            raise ValueError("Car must be DRIVING to add kilometers")
 
